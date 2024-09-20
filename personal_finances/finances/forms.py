@@ -1,5 +1,25 @@
 from django import forms
 from .models import Category
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={"placeholder": "Enter your username"}))
+    password = forms.CharField(required=True, widget=forms.PasswordInput(attrs={"placeholder": "Enter your password"}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+class UserRegisterForm(UserCreationForm):
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={"placeholder": "Enter a username"}))
+    email = forms.EmailField(required=True)
+    first_name = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "Enter your first name"}))
+    last_name = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "Enter your last name"}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
 
 class SpendingsForm(forms.Form):

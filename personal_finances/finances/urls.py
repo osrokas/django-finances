@@ -9,4 +9,6 @@ urlpatterns = [
     path(route="<int:spending_id>/", view=views.detail, name="detail"),
     path(route="add/", view=views.add_spending, name="add"),
     path(route="income/", view=views.add_income, name="income"),
+    path(route="register/", view=views.registration, name="register"),
+    path(route="login/", view=views.login, name="login"),
 ]

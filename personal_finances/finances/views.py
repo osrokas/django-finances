@@ -1,13 +1,15 @@
 from calendar import c
-from django.shortcuts import render
+from re import U
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django_tables2 import SingleTableView
 from .models import Category, Spending, Income
 from .tables import SpendingTable
 import pandas as pd
-from .forms import SpendingsForm, IncomeForm
+from .forms import SpendingsForm, IncomeForm, UserRegisterForm, UserLoginForm
 from django.db.models import Sum
 from .utils import current_month_range
+from django.contrib.auth import authenticate
 
 def index(request):
 
@@ -138,3 +140,37 @@ def add_income(request):
             return render(request, "spendings/income.html", {"form": form, "text": text})
     else:
         return render(request, "spendings/income.html", {"form": form})
+
+
+def login(request):
+
+    form = UserLoginForm(request.POST)
+    if request.method == "POST":
+        print(request.POST.get("username"))
+        if form.is_valid():
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                return redirect(index)
+            else:
+                return redirect(login)
+
+    return render(request, "spendings/login.html", {"form": form})
+
+
+def registration(request):
+
+    form = UserRegisterForm(request.POST)
+    
+    if request.method == "POST":
+        print(request.POST.get("username"))
+        if form.is_valid():
+            form.save()
+            return redirect(login)
+        else:
+            return redirect(registration)
+    else:
+        return render(request, "spendings/register.html", {"form": form})
