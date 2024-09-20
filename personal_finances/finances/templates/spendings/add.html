@@ -1,0 +1,20 @@
+{% extends "spendings/layout.html" %}
+
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
+
+{% block main %}
+<div style="margin: 10vh; max-width: 400px;">
+    <form action="/finances/add/" method="post">
+    {% csrf_token %}
+    {{form|crispy}}
+    <input style="margin-top: 1vh;" type="submit" value="Submit" class="btn btn-success">
+    </form>
+{% if text %}
+    <p>{{ text.text }}</p>
+{% endif %}
+</div>
+
+
+{% endblock %}

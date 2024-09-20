@@ -1,0 +1,47 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    color: white;
+    background: rgb(33, 37, 41);
+    background: linear-gradient(180deg, rgba(33, 37, 41, 1) 13%, rgba(35, 32, 78, 1) 68%);
+    /* when resize window not repeat background */
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+H2 {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.center-text {
+    text-align: center;
+}
+
+
+canvas#myVisualization {
+    background-color: #8985b800;
+    color: black;
+}
+
+td {
+    color: rgb(255, 255, 255);
+}
+
+thead {
+    color: rgb(255, 255, 255);
+}
+
+
+
+canvas#myIncome {
+    background-color: #8985b800;
+    color: black;
+}
+
+.chart-container {
+
+    text-align: center;
+}

@@ -1,0 +1,121 @@
+{% extends "spendings/layout.html" %}
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
+
+{% block main %}
+<div style="margin: 10vh; ">
+    <div class="center-text">
+        <h1>Personal finances</h1>
+        <div>
+            This is a simple personal finances app. You can add your spendings and income and see them in a table and in a chart. 
+        </div>
+        <h2 style="margin: 5vh;">Balance: {{ balance }} EUR</h2>
+    </div>  
+    <div class="modal-body row">
+        <div class="col-md-6">
+            <h2 style="margin: 2vh;">This month total spent: {{ total }} EUR</h2>
+            <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
+            <div class="chart-container" style="max-height:40vh;">
+            <canvas id="myVisualization"></canvas>
+            </div>
+
+        <script>
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            
+            // var ctx = document.getElementById('myVisualization').getContext('2d');
+            new Chart(document.getElementById('myVisualization'), {
+                
+                type: 'doughnut',
+                data: {
+                    labels: [{%for label in labels%}"{{label}}",{%endfor%}],
+                    
+                    datasets: [
+                        {
+                            label: 'Amount',
+                            data: [{%for value in values%}{{value}},{%endfor%}],
+                            backgroundColor: [{%for color in values%} getRandomColor(),{%endfor%}],
+                            borderwidth: 1,
+                        
+                        }
+                    ]
+                },
+                options: {
+                    plugins:{
+                        chartArea: {
+                            backgroundColor: 'rgba(251, 85, 85, 0.4)'
+                        },
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: "Amount spent per month by category",
+                            },
+                    }}
+            });
+        </script>
+        </div>
+        <div class="col-md-6">
+            <h2 style="margin: 2vh;">This month total income: {{total_income}} EUR</h2>
+
+            <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
+            <div class="chart-container"  style="max-height:40vh;">
+            <canvas id="myIncome"></canvas>
+            </div>
+                
+        <script>
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            
+            // var ctx = document.getElementById('myVisualization').getContext('2d');
+            new Chart(document.getElementById('myIncome'), {
+                
+                type: 'doughnut',
+                data: {
+                    labels: [{%for label in income_labels%}"{{label}}",{%endfor%}],
+                    
+                    datasets: [
+                        {
+                            label: 'Amount',
+                            data: [{%for value in income_values%}{{value}},{%endfor%}],
+                            backgroundColor: [{%for color in income_values%} getRandomColor(),{%endfor%}],
+                            borderwidth: 1,
+                        
+                        }
+                    ]
+                },
+                options: {
+                    plugins:{
+                        chartArea: {
+                            backgroundColor: 'rgba(251, 85, 85, 0.4)'
+                        },
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: "Income per month",
+                            },
+                    }}
+            });
+        </script>
+        </div>
+    </div>
+        
+        
+    </div>
+    
+</div>
+
+{% endblock %}
