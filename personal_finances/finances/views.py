@@ -1,5 +1,4 @@
-from calendar import c
-from re import U
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django_tables2 import SingleTableView
@@ -9,8 +8,10 @@ import pandas as pd
 from .forms import SpendingsForm, IncomeForm, UserRegisterForm, UserLoginForm
 from django.db.models import Sum
 from .utils import current_month_range
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as login_user, logout as logout_user
 
+
+@login_required
 def index(request):
 
     start_date, end_date = current_month_range()
@@ -69,6 +70,7 @@ def index(request):
     }
     return render(request, "spendings/index.html", context)
 
+
 def detail(request, spending_id):
     return HttpResponse(f"Spending on {spending_id}")
 
@@ -78,6 +80,7 @@ class SpendingsListView(SingleTableView):
     table_class = SpendingTable
     template_name = "spendings/spending.html"
 
+@login_required
 def chart_response(request):
     start_date, end_date = current_month_range()
 
@@ -95,14 +98,14 @@ def chart_response(request):
 
     labels = df['category'].tolist()
     values = df['amount'].tolist()
-    
+
     context = {
         "labels": labels,
         "values": values,
     }
     return render(request, "spendings/chart.html", context)
 
-
+@login_required
 def add_spending(request):
     form = SpendingsForm(request.POST)
     if request.method == "POST":
@@ -126,7 +129,7 @@ def add_spending(request):
     else:
         return render(request, "spendings/add.html", {"form": form})
 
-
+@login_required
 def add_income(request):
     form = IncomeForm(request.POST)
     if request.method == "POST":
@@ -143,22 +146,22 @@ def add_income(request):
 
 
 def login(request):
-
     form = UserLoginForm(request.POST)
+
     if request.method == "POST":
-        print(request.POST.get("username"))
         if form.is_valid():
             username = request.POST.get("username")
             password = request.POST.get("password")
 
             user = authenticate(username=username, password=password)
-
+            login_user(request=request, user=user)
             if user is not None:
                 return redirect(index)
             else:
                 return redirect(login)
 
-    return render(request, "spendings/login.html", {"form": form})
+    elif request.method == "GET":
+        return render(request, "spendings/login.html", {"form": form})
 
 
 def registration(request):
@@ -174,3 +177,7 @@ def registration(request):
             return redirect(registration)
     else:
         return render(request, "spendings/register.html", {"form": form})
+
+def logout(request):
+    logout_user(request)
+    return redirect("login")

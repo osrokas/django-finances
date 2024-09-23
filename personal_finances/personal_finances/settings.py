@@ -133,3 +133,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #     },
 # }
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# # LOGIN CACHING
+LOGIN_URL = "../../finances/login/"
+LOGIN_REDIRECT_URL = "../../finances/"
+
+SESSION_COOKIE_SECURE = False

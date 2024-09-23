@@ -44,4 +44,11 @@ canvas#myIncome {
 .chart-container {
 
     text-align: center;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.block-container{
+    display: flex;
 }

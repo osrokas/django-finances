@@ -15,10 +15,14 @@
     </div>  
     <div class="modal-body row">
         <div class="col-md-6">
-            <h2 style="margin: 2vh;">This month total spent: {{ total }} EUR</h2>
+            <div class="row">
+            <h2 style="margin: 2vh; color:white;">This month total spent: {{ total }} EUR</h2>
+            </div>
             <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
-            <div class="chart-container" style="max-height:40vh;">
+            <div class="row">
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
             <canvas id="myVisualization"></canvas>
+            </div>
             </div>
 
         <script>
@@ -57,17 +61,21 @@
                         title: {
                             display: true,
                             text: "Amount spent per month by category",
+                            color: 'white',
                             },
                     }}
             });
         </script>
         </div>
         <div class="col-md-6">
+            <div class="row">
             <h2 style="margin: 2vh;">This month total income: {{total_income}} EUR</h2>
-
+            </div>
             <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
-            <div class="chart-container"  style="max-height:40vh;">
+            <div class="row">
+            <div class="chart-container"  style="position: relative; height:40vh; width:80vw;">
             <canvas id="myIncome"></canvas>
+            </div>
             </div>
                 
         <script>
@@ -106,6 +114,7 @@
                         title: {
                             display: true,
                             text: "Income per month",
+                            color: 'white',
                             },
                     }}
             });

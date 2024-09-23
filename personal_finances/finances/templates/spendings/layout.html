@@ -26,6 +26,7 @@
     <div id="container">
 
         <!-- create nav bar div -->
+         <div id="nav-container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
               <button
@@ -59,14 +60,17 @@
                 </div>
                 <div>
                   <a href="/finances/login" class="btn btn-dark my-2" role="button">Login</a>
+                  <a href="/finances/logout" class="btn btn-dark my-2" role="button">Logout</a>
                   <a href="/finances/register" class="btn btn-dark my-2" style="margin-right: 1rem; position: relative;" role="button">Sign up</a>
                 </div>
               </nav>
+            
+            </div>
 
               
-          
+      <div class="block-container" style="display: flex; justify-content: center; ">
         {% block main %}{% endblock %}
-    
+      </div>
     </div>
   </body>
 </html>
