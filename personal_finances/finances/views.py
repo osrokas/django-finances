@@ -1,3 +1,4 @@
+from math import log
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
@@ -145,20 +146,25 @@ def add_income(request):
         return render(request, "spendings/income.html", {"form": form})
 
 
-def login(request):
+def login(request, message=None):
     form = UserLoginForm(request.POST)
 
     if request.method == "POST":
-        if form.is_valid():
-            username = request.POST.get("username")
-            password = request.POST.get("password")
+        try:
+            if form.is_valid():
+                username = request.POST.get("username")
+                password = request.POST.get("password")
 
-            user = authenticate(username=username, password=password)
-            login_user(request=request, user=user)
-            if user is not None:
-                return redirect(index)
-            else:
-                return redirect(login)
+                user = authenticate(request, username=username, password=password)
+                login_user(request=request, user=user)
+                if user is not None:
+                    return redirect(index)
+                else:
+                    return redirect(login)
+        except Exception as e:
+            login_error = {"error": "Invalid username or password"}
+            context = {"form": form, "login_error": login_error}
+            return redirect(login)
 
     elif request.method == "GET":
         return render(request, "spendings/login.html", {"form": form})
@@ -167,12 +173,14 @@ def login(request):
 def registration(request):
 
     form = UserRegisterForm(request.POST)
-    
+
     if request.method == "POST":
-        print(request.POST.get("username"))
         if form.is_valid():
+            print(form.is_valid())
             form.save()
             return redirect(login)
+        elif form.errors:
+            return redirect(registration)
         else:
             return redirect(registration)
     else:

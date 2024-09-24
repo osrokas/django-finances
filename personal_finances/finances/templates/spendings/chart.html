@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
         <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin-top: 10vh;">
 
-            <canvas id="myVisualization"></canvas>
+            <canvas id="barChart"></canvas>
         </div>
 
         <script>
@@ -56,10 +56,11 @@
             }
 
             // var ctx = document.getElementById('myVisualization').getContext('2d');
-            new Chart(document.getElementById('myVisualization'), {
+            new Chart(document.getElementById('barChart'), {
                 
                 type: 'bar',
                 labels: globalLabels,
+                
                 data: {
                            
                     datasets: dataset
@@ -71,28 +72,38 @@
                             backgroundColor: backgroundColors
                         },
                         responsive: true,
-                        legend: { display: true, 
+                        legend: { 
+                            display: true, 
                             position: 'right',
                             backgroundColors: backgroundColors,
                             onClick: chartHandler,
-
-                            
                             fontSize: 16,
+                            labels: {
+                                color: 'white',
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: "Chart of spendings by category",
+                            color: 'white',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: 'white',
                             },
 
-                            }
-
-                         },
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Amount'
-                            }
-                        }]
-                    }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'white',
+                            },
                     },
-                    
+                },
+
+                },
+            },        
             );
         </script>
 {% endblock %}
