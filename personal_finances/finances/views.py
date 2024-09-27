@@ -47,6 +47,8 @@ def index(request):
 
     balance = float(total_income) - float(total)
 
+    balance = "%.2f" % balance
+
     data_income = []
     for income in incomes:
         _income = {
@@ -110,7 +112,6 @@ def chart_response(request):
 def add_spending(request):
     form = SpendingsForm(request.POST)
     if request.method == "POST":
-        print(request)
         if form.is_valid():
 
             amount = request.POST.get("amount")
@@ -126,6 +127,8 @@ def add_spending(request):
             )
             spending.save()
             text = {'text': 'Spending added successfully'}
+            # Clean the form
+            form = SpendingsForm()
             return render(request, "spendings/add.html", {"form": form, "text": text})
     else:
         return render(request, "spendings/add.html", {"form": form})
@@ -141,6 +144,8 @@ def add_income(request):
             income = Income(amount=amount, date=date, description=description)
             income.save()
             text = {'text': 'Income added successfully'}
+            # Clean the form
+            form = IncomeForm()
             return render(request, "spendings/income.html", {"form": form, "text": text})
     else:
         return render(request, "spendings/income.html", {"form": form})
