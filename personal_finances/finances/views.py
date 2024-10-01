@@ -2,15 +2,19 @@ from math import log
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from django_tables2 import SingleTableView
 from .models import Category, Spending, Income
-from .tables import SpendingTable
+from .tables import FilteredSingleTableView, SpendingTable
 import pandas as pd
-from .forms import SpendingsForm, IncomeForm, UserRegisterForm, UserLoginForm
+from .forms import (
+    SpendingsForm,
+    IncomeForm,
+    UserRegisterForm,
+    UserLoginForm,
+)
 from django.db.models import Sum
 from .utils import current_month_range
 from django.contrib.auth import authenticate, login as login_user, logout as logout_user
-
+from .filters import TableFilters
 
 @login_required
 def index(request):
@@ -18,59 +22,73 @@ def index(request):
     start_date, end_date = current_month_range()
     # filter and sum all spendings for the current month
     spendings = Spending.objects.filter(date__range=[start_date, end_date])
-    total_spendings = spendings.aggregate(total=Sum('amount'))
-    total = total_spendings["total"]
 
-    total = ("%.2f" % total)
+    if spendings:
 
-    data = []
+        total_spendings = spendings.aggregate(total=Sum('amount'))
+        total = total_spendings["total"]
 
-    for spending in spendings:
-        spending = {
-            "category": spending.category.category_name,
-            "amount": spending.amount,
+        total = ("%.2f" % total)
+
+        data = []
+
+        for spending in spendings:
+            spending = {
+                "category": spending.category.category_name,
+                "amount": spending.amount,
+            }
+            data.append(spending)
+
+        df = pd.DataFrame(data)
+        df = df.groupby("category").sum()
+        df = df.reset_index()
+
+        labels = df["category"].tolist()
+        values = df["amount"].tolist()
+
+        # Income
+        incomes = Income.objects.filter(date__range=[start_date, end_date])
+        total_incomes = incomes.aggregate(total=Sum('amount'))
+        total_income = total_incomes["total"]
+        total_income = "%.2f" % total_income
+
+        balance = float(total_income) - float(total)
+
+        balance = "%.2f" % balance
+
+        data_income = []
+        for income in incomes:
+            _income = {
+                "category": income.description,
+                "amount": income.amount,
+            }
+            data_income.append(_income)
+
+        df = pd.DataFrame(data_income)
+
+        income_labels = df["category"].tolist()
+        income_values = df["amount"].tolist()
+
+        context = {
+            "balance": balance,
+            "total": total,
+            "labels": labels,
+            "values": values,
+            "total_income": total_income,
+            "income_labels": income_labels,
+            "income_values": income_values
         }
-        data.append(spending)
-
-    df = pd.DataFrame(data)
-    df = df.groupby("category").sum()
-    df = df.reset_index()
-
-    labels = df["category"].tolist()
-    values = df["amount"].tolist()
-
-    # Income
-    incomes = Income.objects.filter(date__range=[start_date, end_date])
-    total_incomes = incomes.aggregate(total=Sum('amount'))
-    total_income = total_incomes["total"]
-    total_income = "%.2f" % total_income
-
-    balance = float(total_income) - float(total)
-
-    balance = "%.2f" % balance
-
-    data_income = []
-    for income in incomes:
-        _income = {
-            "category": income.description,
-            "amount": income.amount,
+    else:
+        context = {
+            "balance": 0,
+            "total": 0,
+            "labels": [],
+            "values": [],
+            "total_income": 0,
+            "income_labels": [],
+            "income_values": []
         }
-        data_income.append(_income)
 
-    df = pd.DataFrame(data_income)
-
-    income_labels = df["category"].tolist()
-    income_values = df["amount"].tolist()
-
-    context = {
-        "balance": balance,
-        "total": total,
-        "labels": labels,
-        "values": values,
-        "total_income": total_income,
-        "income_labels": income_labels,
-        "income_values": income_values
-    }
     return render(request, "spendings/index.html", context)
 
 
@@ -78,10 +96,33 @@ def detail(request, spending_id):
     return HttpResponse(f"Spending on {spending_id}")
 
 
-class SpendingsListView(SingleTableView):
+# def product_list(request):
+#     f = CategoryFilter(request.GET, queryset=Spending.objects.all())
+#     return render(request, "spendings/spending.html", {"filter": f})
+
+
+# @login_required
+# def table(request):
+#     queryset = Spending.objects.all()
+#     table_filter = CategoryFilter(request.GET, queryset=queryset)
+
+#     table = SpendingTable(table_filter.qs)
+
+#     context = {"form": table_filter.form, "table": table}
+
+#     return render(request, "spendings/spending.html", context)
+
+# table = PersonTable(Person.objects.all())
+
+# return render(request, "person_list.html", {"table": table})
+
+
+class SpendingsListView(FilteredSingleTableView):
     model = Spending
     table_class = SpendingTable
     template_name = "spendings/spending.html"
+    filterset_class = TableFilters
+
 
 @login_required
 def chart_response(request):
@@ -89,23 +130,30 @@ def chart_response(request):
 
     spendings = Spending.objects.filter(date__range=[start_date, end_date])
 
-    data = []
+    if spendings:
 
-    for spending in spendings:
-        spending = {'category': spending.category.category_name, 'amount': spending.amount}
-        data.append(spending)
+        data = []
 
-    df = pd.DataFrame(data)
-    df = df.groupby('category').sum()
-    df = df.reset_index()
+        for spending in spendings:
+            spending = {'category': spending.category.category_name, 'amount': spending.amount}
+            data.append(spending)
 
-    labels = df['category'].tolist()
-    values = df['amount'].tolist()
+        df = pd.DataFrame(data)
+        df = df.groupby('category').sum()
+        df = df.reset_index()
 
-    context = {
-        "labels": labels,
-        "values": values,
-    }
+        labels = df['category'].tolist()
+        values = df['amount'].tolist()
+
+        context = {
+            "labels": labels,
+            "values": values,
+        }
+    else:
+        context = {
+            "labels": [],
+            "values": [],
+        }
     return render(request, "spendings/chart.html", context)
 
 @login_required

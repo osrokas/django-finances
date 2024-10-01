@@ -1,3 +1,4 @@
+import re
 from django import forms
 from .models import Category
 from django.contrib.auth.models import User
@@ -72,4 +73,29 @@ class IncomeForm(forms.Form):
         widget=forms.Textarea(
             attrs={"required": "False", "placeholder": "Write a description"}
         ),
+    )
+
+
+# class DateRangeForm(forms.Form):
+#     start_date = forms.DateField(
+#         label='Start date',
+#         required=False,
+#         widget=forms.DateInput(
+#             attrs={"type" : "date", "required": "False"}
+#         )
+#     )
+    
+#     end_date = forms.DateField(
+#         label='Start date',
+#         required=False,
+#         widget=forms.DateInput(
+#             attrs={"type" : "date", "required": "False"}
+#         )
+#     )
+
+class TableFilterForm(forms.Form):
+    description = forms.CharField(
+        label="Description",
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Enter a description"}),
     )
