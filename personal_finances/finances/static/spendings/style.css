@@ -47,4 +47,5 @@ canvas#myIncome {
 
 .block-container{
     display: flex;
+    justify-content: center;
 }

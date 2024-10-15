@@ -7,10 +7,6 @@
 {% block main %}
 <div style="margin: 10vh; ">
     <div class="center-text">
-        <h1>Personal finances</h1>
-        <div>
-            This is a simple personal finances app. You can add your spendings and income and see them in a table and in a chart. 
-        </div>
         <h2 style="margin: 5vh;">Balance: {{ balance }} EUR</h2>
     </div>  
     <div class="modal-body row">
@@ -73,7 +69,7 @@
             </div>
             <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
             <div class="row">
-            <div class="chart-container"  style="position: relative; height:40vh; width:80vw;">
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
             <canvas id="myIncome"></canvas>
             </div>
             </div>
@@ -121,9 +117,105 @@
         </script>
         </div>
     </div>
-        
-        
+
+    <div class="modal-body row">
+
+
+        <div style="position: relative; height:40vh; max-width:80vw; margin-top: 10vh;">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <script>
+
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            function chartHandler(e, legendItem, legend) {
+                const index = legendItem.datasetIndex;
+                const ci = legend.chart;
+                if (ci.isDatasetVisible(index)) {
+                    ci.hide(index);
+                    legendItem.hidden = true;
+                } else {
+                    ci.show(index);
+                    legendItem.hidden = false;
+                }
+            }
+
+
+            var globalLabels = [{%for label in total_by_month_labels%}"{{label}}",{%endfor%}];
+            var data = [{%for value in total_by_month_amounts%}{{value}},{%endfor%}];
+
+
+            // Zip globalLabels and data
+            const chart_data = globalLabels.map((x, i) => ({ 'x': globalLabels[i], 'y': data[i] }));
+
+            
+
+            new Chart(document.getElementById('barChart'), {
+                
+                type: 'bar',
+                
+                data: {
+                    datasets: [{
+                        data: data
+                    }],
+                    labels: globalLabels
+                        
+                },
+                options: {
+                    plugins:{
+                        responsive: true,
+                        legend: { 
+                            display: false, 
+    
+                        },
+                        title: {
+                            display: true,
+                            text: "Spent money per month",
+                            color: 'white',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                display: false,
+                                color: 'white',
+                            },
+                            grid: {
+                                display: false,
+                            },
+                            axis: {
+                                display: false
+                            }
+                            
+
+                        },
+                        x: {
+                            ticks: {
+                                color: 'white',
+                            },
+                            grid: {
+                                display: false,
+
+                            }
+                        },
+                    },
+
+                },
+            },        
+            );
+        </script>
+
+
     </div>
+
     
 </div>
 

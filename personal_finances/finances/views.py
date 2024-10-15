@@ -23,7 +23,19 @@ def index(request):
     # filter and sum all spendings for the current month
     spendings = Spending.objects.filter(date__range=[start_date, end_date])
 
+    # Get totals by month
+    totals_by_month = Spending.totals_by_month()
+
+    if totals_by_month:
+        total_by_month_amounts = [row.get('amount__sum') for row in totals_by_month]
+        total_by_month_labels = [row.get('month') for row in totals_by_month]
+    else:
+        total_by_month_amounts = []
+        total_by_month_labels = []
+
+
     if spendings:
+
 
         total_spendings = spendings.aggregate(total=Sum('amount'))
         total = total_spendings["total"]
@@ -89,32 +101,14 @@ def index(request):
             "income_values": []
         }
 
+    context["total_by_month_amounts"] = total_by_month_amounts
+    context["total_by_month_labels"] = total_by_month_labels
+
     return render(request, "spendings/index.html", context)
 
 
 def detail(request, spending_id):
     return HttpResponse(f"Spending on {spending_id}")
-
-
-# def product_list(request):
-#     f = CategoryFilter(request.GET, queryset=Spending.objects.all())
-#     return render(request, "spendings/spending.html", {"filter": f})
-
-
-# @login_required
-# def table(request):
-#     queryset = Spending.objects.all()
-#     table_filter = CategoryFilter(request.GET, queryset=queryset)
-
-#     table = SpendingTable(table_filter.qs)
-
-#     context = {"form": table_filter.form, "table": table}
-
-#     return render(request, "spendings/spending.html", context)
-
-# table = PersonTable(Person.objects.all())
-
-# return render(request, "person_list.html", {"table": table})
 
 
 class SpendingsListView(FilteredSingleTableView):
