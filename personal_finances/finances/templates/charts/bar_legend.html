@@ -1,0 +1,101 @@
+<div class="col-md-4" style="background-color: #161b2eaf; border-radius: 10px;">
+            <canvas id="{{id}}" style="position: relative; width: 100%; height: 100%;"></canvas>
+        </div>
+        <script>
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            function chartHandler(e, legendItem, legend) {
+                const index = legendItem.datasetIndex;
+                const ci = legend.chart;
+                if (ci.isDatasetVisible(index)) {
+                    ci.hide(index);
+                    legendItem.hidden = true;
+                } else {
+                    ci.show(index);
+                    legendItem.hidden = false;
+                }
+            }
+
+
+            var globalLabels = [{%for label in labels%}"{{label}}",{%endfor%}];
+            var backgroundColors = ["#c31744", "#e27c7c", "#11172d", "#0ca289", "#6cd4c5", "#bc384d", "#3c4e4b",  "#11172d", "#0ca289", "#6cd4c5", "#bc384d", "#3c4e4b"];
+            var data = [{%for value in values%}{{value}},{%endfor%}];
+
+            const chart_data_category = globalLabels.map((x, i) => ({ 'Category': data[i] }));
+            console.log(chart_data_category);
+                        
+            let globalHidden = []
+            for (let i = 0; i < globalLabels.length; i += 1) {
+                globalHidden.push(false)
+            }
+            
+            let dataset = []
+
+            for (let i = 0; i < globalLabels.length; i += 1) {
+                dataset.push({
+                    label: globalLabels[i],
+                    data: chart_data_category[i],
+                    backgroundColor: backgroundColors[i],
+
+                })
+            }
+
+            new Chart(document.getElementById('{{id}}'), {
+                
+                type: 'bar',
+                labels: globalLabels,
+                
+                data: {
+                           
+                    datasets: dataset
+                },
+
+                options: {
+                    plugins:{
+                        chartArea: {
+                            backgroundColor: backgroundColors
+                        },
+                        responsive: true,
+                        legend: { 
+                            display: true, 
+                            position: 'top',
+                            backgroundColors: backgroundColors,
+                            onClick: chartHandler,
+                            fontSize: 16,
+                            labels: {
+                                color: 'white',
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: "Total spent by category",
+                            color: 'white',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: 'white',
+                            },
+
+                        },
+                        x: {
+                            ticks: {
+                                color: 'white',
+                            },
+                    },
+                },
+
+                },
+            },        
+            );
+        </script>
+
+        </div>

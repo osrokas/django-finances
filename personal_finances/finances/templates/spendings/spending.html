@@ -1,16 +1,21 @@
 {% extends "spendings/layout.html" %}
 
     {% load static %}
-
+    
     <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 
 {% load render_table from django_tables2 %}
-
-
+{% load bootstrap3 %}
 
         {% block main %}
-        <div style="margin: 10vh; color: #1a1111; width: 1200px;">
+        <div style="margin: 10vh; color: #ffffff; width: 1200px; display: grid;">
+            {% if filter %}
+        <form action="" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        <button style="display:flex;justify-self:center; text-align: center; margin-top:1rem; margin-bottom: 1rem;" type="submit" class="btn btn-success mx-auto d-block" >Search</button>
+        </form>
+        {% endif %}
         {% render_table table %}
         </div>
         {% endblock %}

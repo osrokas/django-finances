@@ -1,13 +1,3 @@
-{% extends "spendings/layout.html" %}
-{% block main %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'spendings/style.css' %}">
-        <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin-top: 10vh;">
-
-            <canvas id="barChart"></canvas>
-        </div>
-
-        <script>
 
             function getRandomColor() {
                 var letters = '0123456789ABCDEF'.split('');
@@ -50,12 +40,9 @@
                     label: globalLabels[i],
                     data: chart_data[i],
                     backgroundColor: backgroundColors[i],
-                    // hidden: globalHidden[i],
-                    // fill: true,
                 })
             }
 
-            // var ctx = document.getElementById('myVisualization').getContext('2d');
             new Chart(document.getElementById('barChart'), {
                 
                 type: 'bar',
@@ -105,5 +92,3 @@
                 },
             },        
             );
-        </script>
-{% endblock %}

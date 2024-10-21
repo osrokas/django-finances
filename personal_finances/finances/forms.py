@@ -1,7 +1,10 @@
 from django import forms
-from .models import Category
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from crispy_forms.layout import Layout, Fieldset
+from crispy_forms.helper import FormHelper
+
+from .models import Category
 
 class UserLoginForm(forms.Form):
     username = forms.CharField(required=True, widget=forms.TextInput(attrs={"placeholder": "Enter your username"}))
@@ -10,6 +13,7 @@ class UserLoginForm(forms.Form):
     class Meta:
         model = User
         fields = ['username', 'password']
+
 
 class UserRegisterForm(UserCreationForm):
     username = forms.CharField(required=True, widget=forms.TextInput(attrs={"placeholder": "Enter a username"}))
@@ -73,3 +77,18 @@ class IncomeForm(forms.Form):
             attrs={"required": "False", "placeholder": "Write a description"}
         ),
     )
+
+
+class TableFilterForm(forms.Form):
+    description = forms.CharField(
+        label="Description",
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Enter a description"}),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(TableFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset('Filter', 'description'),
+        )

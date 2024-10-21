@@ -5,126 +5,17 @@
     <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
 
 {% block main %}
-<div style="margin: 10vh; ">
-    <div class="center-text">
-        <h1>Personal finances</h1>
-        <div>
-            This is a simple personal finances app. You can add your spendings and income and see them in a table and in a chart. 
-        </div>
-        <h2 style="margin: 5vh;">Balance: {{ balance }} EUR</h2>
-    </div>  
-    <div class="modal-body row">
-        <div class="col-md-6">
-            <div class="row">
-            <h2 style="margin: 2vh; color:white;">This month total spent: {{ total }} EUR</h2>
-            </div>
-            <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
-            <div class="row">
-            <div class="chart-container" style="position: relative; height:40vh; width:80vw;">
-            <canvas id="myVisualization"></canvas>
-            </div>
-            </div>
-
-        <script>
-            function getRandomColor() {
-                var letters = '0123456789ABCDEF'.split('');
-                var color = '#';
-                for (var i = 0; i < 6; i++ ) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-            }
-            
-            // var ctx = document.getElementById('myVisualization').getContext('2d');
-            new Chart(document.getElementById('myVisualization'), {
-                
-                type: 'doughnut',
-                data: {
-                    labels: [{%for label in labels%}"{{label}}",{%endfor%}],
-                    
-                    datasets: [
-                        {
-                            label: 'Amount',
-                            data: [{%for value in values%}{{value}},{%endfor%}],
-                            backgroundColor: [{%for color in values%} getRandomColor(),{%endfor%}],
-                            borderwidth: 1,
-                        
-                        }
-                    ]
-                },
-                options: {
-                    plugins:{
-                        chartArea: {
-                            backgroundColor: 'rgba(251, 85, 85, 0.4)'
-                        },
-                        legend: { display: false },
-                        title: {
-                            display: true,
-                            text: "Amount spent per month by category",
-                            color: 'white',
-                            },
-                    }}
-            });
-        </script>
-        </div>
-        <div class="col-md-6">
-            <div class="row">
-            <h2 style="margin: 2vh;">This month total income: {{total_income}} EUR</h2>
-            </div>
-            <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
-            <div class="row">
-            <div class="chart-container"  style="position: relative; height:40vh; width:80vw;">
-            <canvas id="myIncome"></canvas>
-            </div>
-            </div>
-                
-        <script>
-            function getRandomColor() {
-                var letters = '0123456789ABCDEF'.split('');
-                var color = '#';
-                for (var i = 0; i < 6; i++ ) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-            }
-            
-            // var ctx = document.getElementById('myVisualization').getContext('2d');
-            new Chart(document.getElementById('myIncome'), {
-                
-                type: 'doughnut',
-                data: {
-                    labels: [{%for label in income_labels%}"{{label}}",{%endfor%}],
-                    
-                    datasets: [
-                        {
-                            label: 'Amount',
-                            data: [{%for value in income_values%}{{value}},{%endfor%}],
-                            backgroundColor: [{%for color in income_values%} getRandomColor(),{%endfor%}],
-                            borderwidth: 1,
-                        
-                        }
-                    ]
-                },
-                options: {
-                    plugins:{
-                        chartArea: {
-                            backgroundColor: 'rgba(251, 85, 85, 0.4)'
-                        },
-                        legend: { display: false },
-                        title: {
-                            display: true,
-                            text: "Income per month",
-                            color: 'white',
-                            },
-                    }}
-            });
-        </script>
-        </div>
-    </div>
+<div class="container-fluid">
+    <div class="row" style="border: 1px red;">
+        {% include "cards/amount_card.html" with title="MONTH <br>  BALANCE" amount=balance %}
         
-        
-    </div>
-    
+        {% include "charts/pie.html" with id="spent" labels=spent_labels values=spent_values title="Current month spent" %}
+        {% include "cards/amount_card.html" with title="MONTH <br> SPENT" amount=total %}
+        {% include "charts/bar.html" with id="spentBar" color="#c31744" labels=total_by_month_labels amounts=total_by_month_amounts title="Total spent by month" %}
+        {% include "charts/bar.html" with id="incomeBar" color="#0ca289" labels=income_by_month_labels amounts=income_by_month_amounts title="Income by month" %}
+        {% include "cards/amount_card.html" with title="MONTH <br> INCOME" amount=total_income %}
+        {% include "charts/pie.html" with id="income" labels=income_labels values=income_values title="Current month income" %}
+        {% include "charts/bar_legend.html" with id="categoryBar" labels=category_labels values=category_values %}
+    </div> 
 </div>
-
 {% endblock %}

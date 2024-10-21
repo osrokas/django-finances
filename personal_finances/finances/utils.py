@@ -1,10 +1,11 @@
-
-from datetime import datetime
 import calendar
-import re
+from datetime import datetime
 
 
-def current_month_range():
+def current_month_range() -> tuple[str, str]:
+    """
+    Returns the start and end date of the current month.
+    """
     current_date = datetime.today()
 
     current_year = current_date.year
@@ -25,3 +26,17 @@ def current_month_range():
     end_date = f"{current_year}-{current_month}-{end_day}"
 
     return start_date, end_date
+
+
+def total_month_data_parser(data) -> tuple[list[float], list[str]]:
+    """
+    Parses the data to get the total amount and labels for each month.
+    """
+    if data:
+        total_by_month_amounts = [row.get('amount__sum') for row in data]
+        total_by_month_labels = [row.get('month') for row in data]
+    else:
+        total_by_month_amounts = []
+        total_by_month_labels = []
+
+    return total_by_month_amounts, total_by_month_labels

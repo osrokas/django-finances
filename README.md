@@ -13,6 +13,7 @@
 - View total balance
 - All expenses table
 - All expenses chart by category
+- Login and register system
 
 ## How to run
 1. Clone the repository

@@ -1,0 +1,44 @@
+<div class="col-md-3" style="background-color: #161b2eaf; border-radius: 10px;">
+    <canvas id="{{id}}"></canvas>
+</div>
+
+<script>
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+new Chart(document.getElementById('{{id}}'), {
+    
+    type: 'doughnut',
+    data: {
+        labels: [{%for label in labels%}"{{label}}",{%endfor%}],
+        
+        datasets: [
+            {
+                label: 'Amount',
+                data: [{%for value in values%}{{value}},{%endfor%}],
+                backgroundColor: ["#c31744", "#e27c7c", "#11172d", "#0ca289", "#6cd4c5", "#bc384d", "#3c4e4b"],
+                borderWidth: 0.1,
+            
+            }
+        ]
+    },
+    options: {
+        plugins:{
+            responsive: true,
+            chartArea: {
+                backgroundColor: 'rgba(251, 85, 85, 0.4)'
+            },
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "{{title}}",
+                color: 'white',
+                },
+        }}
+});
+</script>
