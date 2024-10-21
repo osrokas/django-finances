@@ -1,9 +1,11 @@
-import django_tables2 as tables
-from .models import Spending
-from django_tables2.views import SingleTableView
 from django_filters.views import FilterView
+from django_tables2.tables import Table
+from django_tables2.views import SingleTableView
 
-class SpendingTable(tables.Table):
+from .models import Spending
+
+
+class SpendingTable(Table):
     class Meta:
         model = Spending
         template_name = "django_tables2/semantic.html"
@@ -11,7 +13,6 @@ class SpendingTable(tables.Table):
 
 
 class FilteredSingleTableView(FilterView, SingleTableView):
-
     def get_table_data(self):
         data = super(FilteredSingleTableView, self).get_table_data()
         return data if self.object_list is None else self.object_list

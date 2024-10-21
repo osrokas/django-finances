@@ -2,12 +2,13 @@ html, body {
     width: 100%;
     height: 100%;
     color: white;
-    background: rgb(33, 37, 41);
-    background: linear-gradient(180deg, rgba(33, 37, 41, 1) 13%, rgba(35, 32, 78, 1) 68%);
+
+    background: linear-gradient(180deg, rgba(33, 37, 41, 1) 13%, #243642 68%);
     /* when resize window not repeat background */
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.829);
 }
 
 
@@ -33,19 +34,185 @@ thead {
 
 
 canvas#myIncome {
-    background-color: #8985b800;
+    background-color: #161b2eaf;
     color: black;
 }
 
-.chart-container {
 
-    text-align: center;
-    color: white;
-    display: flex;
-    justify-content: center;
+.btn-success {
+    background-color: #0ca289;
+    border-color: #0ca289;
 }
 
-.block-container{
-    display: flex;
+.btn-success:hover {
+    background-color: #056b5a;
+    border-color: #056b5a;
+}
+
+.col-md-6 {
+    margin: 2vh;
+    height: 20vh;
+    min-width: 20%;
+    box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.829);
+    transition: transform 0.3s ease-in-out;
+    width: 95%;
+}
+
+.col-md-6:hover {
+    transform: scale(1.05);
+}
+
+
+@media (min-width: 768px) {
+    .col-md-6 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 20%;
+        height: 25vh;
+    }
+}
+
+
+.col-md-4 {
+    margin: 2vh;
+    height: 30vh;
+    min-width: 20%;
+    box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
+    transition: transform 0.3s ease-in-out;
+    width: 95%;
+}
+
+.col-md-4:hover {
+    transform: scale(1.05);
+}
+
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 70%;
+        height: 25vh;
+    }
+}
+
+
+.col-md-3 {
+    margin: 2vh;
+    height: 30vh;
     justify-content: center;
+    box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
+    transition: transform 0.3s ease-in-out;
+    width: 95%;
+    
+}
+
+.col-md-3:hover {
+    transform: scale(1.05);
+}
+
+@media (min-width: 768px) {
+    .col-md-3 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 15%;
+        height: 25vh;
+    }
+}
+
+
+.footer {
+    height: 50px;
+    position: fixed;
+    right: 0;
+    bottom: 10;
+    max-width: 200px;
+    color: black;
+    font-size: large;
+    margin: 2 auto;
+    background-color: rgb(255, 255, 255);
+
+
+}
+
+
+.form-group {
+      margin: 15px;
+  }
+
+#id_date_0{
+    margin-right: 10px;
+    margin-left: 10px;
+    max-width: 400px;
+}
+
+#id_date_1{
+    margin-right: 10px;
+    margin-left: 10px;
+    max-width: 400px;
+}
+
+#id_amount_0{
+    max-width: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#id_amount_1{
+    max-width: 200px;
+    margin-left: 10px;
+}
+
+#id_category{
+    max-width: 400px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#id_description{
+    max-width: 600px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#id_amount{
+    max-width: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#id_date{
+    max-width: 400px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#div_id_category{
+    max-width: 400px;
+}
+
+label{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 2px;
+}
+
+thead{
+    color: white;
+}
+
+
+a{
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover{
+    color: rgb(10, 209, 150);
+    text-decoration: none;
 }

@@ -9,7 +9,7 @@
     <form action="/finances/add/" method="post">
     {% csrf_token %}
     {{form|crispy}}
-    <input style="margin-top: 1vh;" type="submit" value="Submit" class="btn btn-success">
+    <input type="submit" value="Submit" class="btn btn-success mx-auto d-block" >
     </form>
 {% if text %}
     <p>{{ text.text }}</p>

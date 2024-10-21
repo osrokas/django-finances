@@ -1,0 +1,81 @@
+<div class="col-md-4" style="background-color: #161b2eaf; border-radius: 10px;">
+    <canvas id="{{id}}"></canvas>
+
+    <script>
+            function chartHandler(e, legendItem, legend) {
+                const index = legendItem.datasetIndex;
+                const ci = legend.chart;
+                if (ci.isDatasetVisible(index)) {
+                    ci.hide(index);
+                    legendItem.hidden = true;
+                } else {
+                    ci.show(index);
+                    legendItem.hidden = false;
+                }
+                }
+                
+        var globalLabels = [{%for label in labels%}"{{label}}",{%endfor%}];
+        var data = [{%for value in amounts%}{{value}},{%endfor%}];
+
+
+        // Zip globalLabels and data
+        var chart_data = globalLabels.map((x, i) => ({ 'x': globalLabels[i], 'y': data[i] }));
+
+
+        new Chart(document.getElementById('{{id}}'), {
+            
+            type: 'bar',
+            
+            data: {
+                datasets: [{
+                    data: data,
+                    backgroundColor: "{{color}}"
+                }],
+                labels: globalLabels,
+                backgroundColor: "#26947a"
+                    
+            },
+            options: {
+                plugins:{
+                    responsive: true,
+                    legend: { 
+                        display: false, 
+
+                    },
+                    title: {
+                        display: true,
+                        text: "{{title}}",
+                        color: 'white',
+                    },
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            display: false,
+                            color: 'white',
+                        },
+                        grid: {
+                            display: false,
+                        },
+                        axis: {
+                            display: false
+                        }
+                        
+
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white',
+                        },
+                        grid: {
+                            display: false,
+
+                        }
+                    },
+                },
+
+            },
+        },        
+        );
+    </script>
+</div>

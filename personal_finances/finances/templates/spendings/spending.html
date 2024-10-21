@@ -11,9 +11,9 @@
         {% block main %}
         <div style="margin: 10vh; color: #ffffff; width: 1200px; display: grid;">
             {% if filter %}
-        <form action="" method="get" class="form form-inline" style="max-width: 400px;">
+        <form action="" method="get" class="form form-inline">
         {% bootstrap_form filter.form layout='inline' %}
-        <button style="display:flex;justify-self:center; text-align: center; margin-top:1rem; margin-bottom: 1rem;" type="submit" class="btn btn-primary" >Search</button>
+        <button style="display:flex;justify-self:center; text-align: center; margin-top:1rem; margin-bottom: 1rem;" type="submit" class="btn btn-success mx-auto d-block" >Search</button>
         </form>
         {% endif %}
         {% render_table table %}

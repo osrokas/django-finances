@@ -1,14 +1,7 @@
-{% extends "spendings/layout.html" %}
-{% block main %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'spendings/style.css' %}">
-        <div class="chart-container" style="position: relative; height:40vh; margin-top: 10vh;">
-
-            <canvas id="barChart"></canvas>
+<div class="col-md-4" style="background-color: #161b2eaf; border-radius: 10px;">
+            <canvas id="{{id}}" style="position: relative; width: 100%; height: 100%;"></canvas>
         </div>
-
         <script>
-
             function getRandomColor() {
                 var letters = '0123456789ABCDEF'.split('');
                 var color = '#';
@@ -32,11 +25,11 @@
 
 
             var globalLabels = [{%for label in labels%}"{{label}}",{%endfor%}];
-            var backgroundColors = [{%for color in values%} getRandomColor(),{%endfor%}];
+            var backgroundColors = ["#c31744", "#e27c7c", "#11172d", "#0ca289", "#6cd4c5", "#bc384d", "#3c4e4b",  "#11172d", "#0ca289", "#6cd4c5", "#bc384d", "#3c4e4b"];
             var data = [{%for value in values%}{{value}},{%endfor%}];
 
-            const chart_data = globalLabels.map((x, i) => ({ 'Amount': data[i] }));
-            console.log(chart_data);
+            const chart_data_category = globalLabels.map((x, i) => ({ 'Category': data[i] }));
+            console.log(chart_data_category);
                         
             let globalHidden = []
             for (let i = 0; i < globalLabels.length; i += 1) {
@@ -48,13 +41,13 @@
             for (let i = 0; i < globalLabels.length; i += 1) {
                 dataset.push({
                     label: globalLabels[i],
-                    data: chart_data[i],
+                    data: chart_data_category[i],
                     backgroundColor: backgroundColors[i],
 
                 })
             }
 
-            new Chart(document.getElementById('barChart'), {
+            new Chart(document.getElementById('{{id}}'), {
                 
                 type: 'bar',
                 labels: globalLabels,
@@ -72,7 +65,7 @@
                         responsive: true,
                         legend: { 
                             display: true, 
-                            position: 'right',
+                            position: 'top',
                             backgroundColors: backgroundColors,
                             onClick: chartHandler,
                             fontSize: 16,
@@ -82,7 +75,7 @@
                         },
                         title: {
                             display: true,
-                            text: "Chart of spendings by category",
+                            text: "Total spent by category",
                             color: 'white',
                         },
                     },
@@ -104,4 +97,5 @@
             },        
             );
         </script>
-{% endblock %}
+
+        </div>

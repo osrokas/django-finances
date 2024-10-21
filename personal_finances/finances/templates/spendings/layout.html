@@ -53,26 +53,44 @@
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/finances/table">Table</a>
                   </li>
-                  <li class="nav-item"></li>
-                    <a class="nav-link active" aria-current="page" href="/finances/chart">Chart</a>
-                  </li>
                   </ul>
                 </div>
                 <!-- Create div style to be in fixed place but hide when overflow -->
                  
                 <div style="position: fixed; top: 10px; right: 10px;">
-                  <a href="/finances/login" class="btn btn-dark my-2" role="button">Login</a>
+                  {% if user.is_authenticated %}
                   <a href="/finances/logout" class="btn btn-dark my-2" role="button">Logout</a>
+                  {% else %}
+                  <a href="/finances/login" class="btn btn-dark my-2" role="button">Login</a>
                   <a href="/finances/register" class="btn btn-dark my-2" style="margin-right: 1rem; position: relative;" role="button">Sign up</a>
+                  {% endif %}
                 </div>
               </nav>
             
             </div>
 
               
-      <div class="block-container" style="display: flex; justify-content: center; ">
+      <div class="block-container" style="display: flex; justify-content: center; margin: 1vh;">
         {% block main %}{% endblock %}
       </div>
     </div>
   </body>
+
+   <footer class="footer"></footer>
+      <ul class="nav">
+        <li class="nav-item" style="position: fixed; right: 0; margin-right: 1rem; bottom: 1rem;">
+          <a
+            style="color: black"
+            href="https://github.com/osrokas/django-finances"
+            class="nav-link px-2"
+            target="_blank"
+          >
+            <img
+              src="{% static 'spendings/assets/github-logo.png' %}"
+              alt="GitHub"
+              style="width: 30px; height: 30px; text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.829); color: white;"
+          /></a>
+        </li>
+      </ul>
+    </footer>
 </html>
