@@ -2,20 +2,21 @@
 
     {% load static %}
 
-    <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
 
+    <link rel="stylesheet" href="{% static 'spendings/style.css' %}">
 {% block main %}
+
 <div class="container-fluid">
     <div class="row" style="border: 1px red;">
-        {% include "cards/amount_card.html" with title="MONTH <br>  BALANCE" amount=balance %}
-        
+        {% include "cards/amount_card.html" with title="MONTH BALANCE" amount=balance %}
         {% include "charts/pie.html" with id="spent" labels=spent_labels values=spent_values title="Current month spent" %}
-        {% include "cards/amount_card.html" with title="MONTH <br> SPENT" amount=total %}
+        {% include "cards/amount_card.html" with title="MONTH SPENT" amount=total lineid="line1" labels=spent_by_day_labels values=spent_by_day_values color="#c31744" %}
         {% include "charts/bar.html" with id="spentBar" color="#c31744" labels=total_by_month_labels amounts=total_by_month_amounts title="Total spent by month" %}
         {% include "charts/bar.html" with id="incomeBar" color="#0ca289" labels=income_by_month_labels amounts=income_by_month_amounts title="Income by month" %}
-        {% include "cards/amount_card.html" with title="MONTH <br> INCOME" amount=total_income %}
-        {% include "charts/pie.html" with id="income" labels=income_labels values=income_values title="Current month income" %}
+        {% include "cards/amount_card.html" with title="MONTH INCOME" amount=total_income lineid="line2" labels=income_by_day_labels values=income_by_day_values  color="#0ca289" %}
+        {% include "charts/pie.html" with id="income" labels=income_labels values=income_values title="Current month income"%}
         {% include "charts/bar_legend.html" with id="categoryBar" labels=category_labels values=category_values %}
     </div> 
+
 </div>
 {% endblock %}

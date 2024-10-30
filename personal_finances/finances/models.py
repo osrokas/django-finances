@@ -66,6 +66,28 @@ class Spending(models.Model):
         
         else:
             return [], []
+        
+    @classmethod
+    def spent_by_day(cls, start_date, end_date):
+        spendings = Spending.objects.filter(date__range=[start_date, end_date])
+
+        if spendings:
+            data_spent = []
+            for spending in spendings:
+                spending = {'date': spending.date, 'amount': spending.amount}
+                data_spent.append(spending)
+
+            df_spent = pd.DataFrame(data_spent)
+            df_spent = df_spent.groupby('date').sum()
+            df_spent = df_spent.reset_index()
+
+            labels_spent = df_spent['date'].tolist()
+            values_spent = df_spent['amount'].tolist()
+
+            return labels_spent, values_spent
+        
+        else:
+            return [], []
 
 
 class Income(models.Model):
@@ -119,5 +141,27 @@ class Income(models.Model):
             
             return income_labels, income_values
             
+        else:
+            return [], []
+
+    @classmethod
+    def income_by_day(cls, start_date, end_date):
+        incomes = Income.objects.filter(date__range=[start_date, end_date])
+
+        if incomes:
+            data_income = []
+            for income in incomes:
+                income = {'date': income.date, 'amount': income.amount}
+                data_income.append(income)
+
+            df_income = pd.DataFrame(data_income)
+            df_income = df_income.groupby('date').sum()
+            df_income = df_income.reset_index()
+
+            labels_income = df_income['date'].tolist()
+            values_income = df_income['amount'].tolist()
+
+            return labels_income, values_income
+        
         else:
             return [], []

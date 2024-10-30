@@ -45,6 +45,13 @@ def index(request):
 
     # Calculate the balance
     monthly_balance = float(monthly_income_total) - float(monthly_spendings_total)
+    monthly_balance = round(monthly_balance, 2)
+
+    # Get spent by day
+    spent_by_day_labels, spent_by_day_values = Spending.spent_by_day(start_date, end_date)
+
+    # Income by day
+    income_by_day_labels, income_by_day_values = Income.income_by_day(start_date, end_date)
 
     # Context for the template
     context = {
@@ -60,7 +67,12 @@ def index(request):
         "income_labels": income_labels,
         "income_values": income_values,
         "category_labels": total_spendings_by_category_labels,
-        "category_values": total_spendings_by_category_amounts
+        "category_values": total_spendings_by_category_amounts,
+        "spent_by_day_labels": spent_by_day_labels,
+        "spent_by_day_values": spent_by_day_values,
+        "income_by_day_labels": income_by_day_labels,
+        "income_by_day_values": income_by_day_values,
+
     }
 
     # Render the template

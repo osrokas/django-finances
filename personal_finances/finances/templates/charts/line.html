@@ -1,8 +1,7 @@
-<div class="col-md-4" style="background-color: #161b2eaf; border-radius: 10px;">
-    <canvas id="{{id}}"></canvas>
+
+    <canvas id="{{lineid}}" style="max-height: 5vh;"></canvas>
 
     <script>
-
             function chartHandler(e, legendItem, legend) {
                 const index = legendItem.datasetIndex;
                 const ci = legend.chart;
@@ -16,27 +15,38 @@
                 }
                 
         var globalLabels = [{%for label in labels%}"{{label}}",{%endfor%}];
-        var data = [{%for value in amounts%}{{value}},{%endfor%}];
+        var data = [{%for value in values%}{{value}},{%endfor%}];
             
+        
 
         // Zip globalLabels and data
         var chart_data = globalLabels.map((x, i) => ({ 'x': globalLabels[i], 'y': data[i] }));
-                
-        new Chart(document.getElementById('{{id}}'), {
+                        
+
+        new Chart(document.getElementById('{{lineid}}'), {
             
-            type: 'bar',
-            
+            type: 'line',
+            labels: globalLabels,
             data: {
                 datasets: [{
                     data: data,
-                    backgroundColor: "{{color}}",
+                    borderColor: "{{color}}",
                 }],
                 labels: globalLabels,
                 backgroundColor: "#26947a"
                     
             },
-            plugins: [ChartDataLabels],
             options: {
+                maintainAspectRatio: false,
+                elements: {
+                    point: {
+                        radius: 0,
+                    },
+                    line: {
+                        tension: 0.5,
+                    },
+                },
+                
                 plugins:{
                     responsive: true,
                     legend: { 
@@ -44,18 +54,22 @@
 
                     },
                     title: {
-                        display: true,
-                        text: "{{title}}",
-                        color: 'white',
+                        display: false,
+
                     },
                     datalabels: {
-						color: 'white',
-                        anchor: 'end',
-						align: 'end',
+                    color: 'blue',
+                    labels: {
+                    title: {
                         font: {
-							weight: 'bold',
-						},
-					}
+                        weight: 'bold'
+                        }
+                    },
+                    value: {
+                        color: 'green'
+                    }
+                    }
+                    },
                 },
                 scales: {
                     y: {
@@ -74,12 +88,12 @@
                     },
                     x: {
                         ticks: {
+                            display: false,
                             color: 'white',
                         },
                         grid: {
                             display: false,
-
-                        }
+                        },
                     },
                 },
 
@@ -87,4 +101,3 @@
         },        
         );
     </script>
-</div>
