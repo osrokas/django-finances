@@ -1,3 +1,4 @@
+from math import e
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as login_user, logout as logout_user
@@ -19,7 +20,7 @@ def index(request):
     """Index view"""
     # Get the start and end date of the current month
     start_date, end_date = current_month_range()
-    
+
     # Filter and sum all spendings for the current month
     monthly_spendings_total = Spending.spendings_by_date_range(start_date, end_date)
 
@@ -53,6 +54,16 @@ def index(request):
     # Income by day
     income_by_day_labels, income_by_day_values = Income.income_by_day(start_date, end_date)
 
+    # Total spendings
+    total_spendings = Spending.spendings_by_date_range("1900-01-01", end_date)
+
+    # Total incomes
+    total_incomes = Income.income_by_date_range("1900-01-01", end_date)
+
+    # Totals balance
+    total_balance = float(total_incomes) - float(total_spendings) + 34.55 # Amount of the start balance without cash
+    total_balance = round(total_balance, 2)
+
     # Context for the template
     context = {
         "balance": monthly_balance,
@@ -72,6 +83,9 @@ def index(request):
         "spent_by_day_values": spent_by_day_values,
         "income_by_day_labels": income_by_day_labels,
         "income_by_day_values": income_by_day_values,
+        "total_spendings": total_spendings,
+        "total_incomes": total_incomes,
+        "total_balance": total_balance,
 
     }
 

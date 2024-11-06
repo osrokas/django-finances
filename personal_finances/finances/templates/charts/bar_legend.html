@@ -29,7 +29,6 @@
             var data = [{%for value in values%}{{value}},{%endfor%}];
 
             const chart_data_category = globalLabels.map((x, i) => ({ 'Category': data[i] }));
-            console.log(chart_data_category);
                         
             let globalHidden = []
             for (let i = 0; i < globalLabels.length; i += 1) {
@@ -50,11 +49,11 @@
             new Chart(document.getElementById('{{id}}'), {
                 
                 type: 'bar',
-                labels: globalLabels,
                 
                 data: {
                            
-                    datasets: dataset
+                    datasets: data,
+                    labels: globalLabels,
                 },
 
                 options: {

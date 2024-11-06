@@ -10,10 +10,11 @@
     {% csrf_token %}
     {{form|crispy}}
     <input type="submit" value="Submit" class="btn btn-success mx-auto d-block" >
-    </form>
-{% if text %}
+    {% if text %}
     <p>{{ text.text }}</p>
-{% endif %}
+    {% endif %}
+    </form>
+
 </div>
 
 

@@ -12,17 +12,16 @@ def current_month_range() -> tuple[str, str]:
     current_month = current_date.month
 
     curent_date_str = f"{current_year}-{current_month}-01"
+
+    print(curent_date_str)
     current_date = datetime.strptime(curent_date_str, "%Y-%m-%d")
 
-    start_day, end_day = calendar.monthrange(current_year, current_month)
+    start_day, end_day = calendar.monthrange(current_year, 11)
 
     if current_month < 10:
         current_month = f"0{current_month}"
 
-    if start_day < 10:
-        start_day = f"0{start_day}"
-
-    start_date = f"{current_year}-{current_month}-{start_day}"
+    start_date = f"{current_year}-{current_month}-01"
     end_date = f"{current_year}-{current_month}-{end_day}"
 
     return start_date, end_date

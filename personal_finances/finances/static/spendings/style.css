@@ -1,7 +1,7 @@
 html, body {
     width: 100%;
     height: 100%;
-    color: white;
+    color: rgb(211, 207, 207);
 
     background: linear-gradient(180deg, rgba(33, 37, 41, 1) 13%, #243642 68%);
     /* when resize window not repeat background */
@@ -33,9 +33,8 @@ thead {
 
 
 
-canvas#myIncome {
-    background-color: #161b2eaf;
-    color: black;
+canvas#spent {
+    width: 60px;
 }
 
 
@@ -50,7 +49,7 @@ canvas#myIncome {
 }
 
 .col-md-6 {
-    margin: 2vh;
+    margin: 1vh;
     height: 20vh;
     min-width: 20%;
     box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
@@ -69,16 +68,16 @@ canvas#myIncome {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 33.333333%;
         flex: 0 0 33.333333%;
-        max-width: 20%;
-        height: 25vh;
+        max-width: 30%;
+        height: 20vh;
     }
 }
 
 
 .col-md-4 {
-    margin: 2vh;
+    margin: 1vh;
     height: 30vh;
-    min-width: 20%;
+    min-width: 70%;
     box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
     transition: transform 0.3s ease-in-out;
     width: 95%;
@@ -101,8 +100,9 @@ canvas#myIncome {
 
 
 .col-md-3 {
-    margin: 2vh;
-    height: 30vh;
+    margin: 1vh;
+    height: 45vh;
+    min-width: 40%;
     justify-content: center;
     box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
     transition: transform 0.3s ease-in-out;
@@ -119,8 +119,8 @@ canvas#myIncome {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 33.333333%;
         flex: 0 0 33.333333%;
-        max-width: 15%;
-        height: 25vh;
+        max-width: 16%;
+        height: 35vh;
     }
 }
 
@@ -143,6 +143,24 @@ canvas#myIncome {
 .form-group {
       margin: 15px;
   }
+
+#nav-container {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #0a0b16;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.829);
+    z-index: 1000;
+}
+
+.bg-dark{
+    background-color: #0a0b16 !important;
+    color: white;
+}
 
 #id_date_0{
     margin-right: 10px;
@@ -215,4 +233,29 @@ a{
 a:hover{
     color: rgb(10, 209, 150);
     text-decoration: none;
+}
+
+.btn-dark{
+    background-color: #0a0b16;
+    border-color: #0a0b16;
+    color: white;
+}
+
+.btn-dark:hover {
+    background-color: #0a0b16;
+    border-color: #0a0b16;
+        color: white;
+}
+
+h6{
+    background-color:#0a0b16;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+@media (max-width: 768px) {
+    h4 {
+        text-align: center;
+    }
 }

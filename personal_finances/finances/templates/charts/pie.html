@@ -11,16 +11,27 @@ function getRandomColor() {
     }
     return color;
 }
+
+var data = [{%for value in values%}{{value}},{%endfor%}];
+var labels = [{%for label in labels%}"{{label}}",{%endfor%}];
+
+if (data.length < 1) {
+    data = [1];
+    labels = ['No data'];
+}
+
 new Chart(document.getElementById('{{id}}'), {
+
+    
     
     type: 'doughnut',
     data: {
-        labels: [{%for label in labels%}"{{label}}",{%endfor%}],
+        labels: labels,
         
         datasets: [
             {
                 label: 'Amount',
-                data: [{%for value in values%}{{value}},{%endfor%}],
+                data: data,
                 backgroundColor: ["#c31744", "#e27c7c", "#11172d", "#0ca289", "#6cd4c5", "#bc384d", "#3c4e4b"],
                 borderWidth: 0.1,
             
@@ -33,12 +44,44 @@ new Chart(document.getElementById('{{id}}'), {
             chartArea: {
                 backgroundColor: 'rgba(251, 85, 85, 0.4)'
             },
-            legend: { display: false },
+            legend: { 
+                display: true,
+                position: 'right',
+                labels: {
+                    
+                    generateLabels: function(chart) {
+                        var data = chart.data;
+                        if (data.labels.length && data.datasets.length) {
+                            return data.labels.map(function(label, i) {
+                                var meta = chart.getDatasetMeta(0);
+                                var ds = data.datasets[0];
+                                var arc = meta.data[i];
+                                var custom = arc && arc.custom || {};
+                                var getValueAtIndexOrDefault = Chart.helpers.getValueAtIndexOrDefault;
+                                var arcOpts = chart.options.elements.arc;
+                                return {
+                                    text: label+ ": " + ds.data[i] + " €",
+                                    hidden: isNaN(ds.data[i]) || meta.data[i].hidden,
+                                    index: i,
+                                    fontColor: "rgb(211, 207, 207)",
+                                    
+                                    
+                                    
+                                };
+                            });
+                        }
+                        return [];
+                    },
+                    boxWidth: 0,
+                }
+                
+            },
             title: {
                 display: true,
                 text: "{{title}}",
-                color: 'white',
+                color: 'rgb(211, 207, 207)',
                 },
         }}
 });
+console.log(datasets)
 </script>
