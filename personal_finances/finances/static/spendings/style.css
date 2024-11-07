@@ -77,7 +77,7 @@ canvas#spent {
 .col-md-4 {
     margin: 1vh;
     height: 30vh;
-    min-width: 70%;
+    min-width: 95% !important;
     box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
     transition: transform 0.3s ease-in-out;
     width: 95%;
@@ -93,7 +93,7 @@ canvas#spent {
         -webkit-box-flex: 0;
         -ms-flex: 0 0 33.333333%;
         flex: 0 0 33.333333%;
-        max-width: 70%;
+        max-width: 98% !important;
         height: 25vh;
     }
 }
@@ -257,5 +257,46 @@ h6{
 @media (max-width: 768px) {
     h4 {
         text-align: center;
+    }
+}
+
+
+.col-md-1{
+    width: 20px;
+}
+
+@media (min-width: 768px) {
+    .col-md-1 {
+        flex: 0 0 auto;
+        width: 2%;
+    }
+}
+
+.list-spendings {
+    box-shadow: 10px 15px 10px rgba(0, 0, 0, 0.829);
+    transition: transform 0.3s ease-in-out;
+    height: 35vh;
+    max-width: 100%;
+    overflow-y: scroll;
+    margin: 1vh;
+
+}
+
+::-webkit-scrollbar {
+    width: 0px
+}
+
+
+.list-spendings:hover {
+    transform: scale(1.05);
+}
+
+@media (min-width: 768px) {
+    .list-spendings {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 100%;
+        height: 32vh;
     }
 }

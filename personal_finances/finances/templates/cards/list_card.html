@@ -1,0 +1,14 @@
+<div class="list-spendings" style="border-radius: 10px;">
+    <div style="background-color: #161b2eaf; position: relative; overflow: hidden; border-radius: 10px; padding: 0px; color: rgb(209, 203, 216);" >
+        <!-- Create loop -->
+        <h5 class="text-center" style="font: 1em tahoma; font-weight: bold; background-color: #0a0b16; padding: 8px; color:  rgb(153, 148, 160);" >{{ title }}</h5>
+            <p>
+                {% for spend in spedings %}
+                <p style="margin-left: 2vh;">{{ spend.description }} - {{spend.amount}} € </h2>
+                {%endfor%}
+            </p>
+        <!-- {% for card in cards %}
+        <p  style=" margin-bottom: 2vh; padding: 2vh;">{{ card }}</h2>
+        {%endfor%} -->
+    </div>
+</div>

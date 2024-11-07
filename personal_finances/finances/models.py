@@ -22,7 +22,7 @@ class Spending(models.Model):
 
     def __str__(self):
         return self.description
-    
+
     @classmethod
     def totals_by_month(cls):
         select_data = {"month": """strftime('%%Y/%%m', date)"""}
@@ -31,7 +31,7 @@ class Spending(models.Model):
         data = [row for row in data]
 
         return data
-    
+
     @classmethod
     def spendings_by_date_range(cls, start_date, end_date):
         spendings = Spending.objects.filter(date__range=[start_date, end_date])
@@ -44,7 +44,7 @@ class Spending(models.Model):
             total = 0.00
 
         return total
-    
+
     @classmethod
     def spendings_by_category_and_date_range(cls, start_date, end_date):
         spendings = Spending.objects.filter(date__range=[start_date, end_date])
@@ -63,10 +63,10 @@ class Spending(models.Model):
             values_category = df_category['amount'].tolist()
 
             return labels_category, values_category
-        
+
         else:
             return [], []
-        
+
     @classmethod
     def spent_by_day(cls, start_date, end_date):
         spendings = Spending.objects.filter(date__range=[start_date, end_date])
@@ -85,9 +85,24 @@ class Spending(models.Model):
             values_spent = df_spent['amount'].tolist()
 
             return labels_spent, values_spent
-        
+
         else:
             return [], []
+    @classmethod
+    def last_spendings(cls):
+        spendings = Spending.objects.all().order_by('-date')[:8]
+
+        data = []
+        for spending in spendings:
+            spending_row = {
+                "date": spending.date,
+                "amount": spending.amount,
+                "description": spending.description,
+            }
+
+            data.append(spending_row)
+
+        return data
 
 
 class Income(models.Model):

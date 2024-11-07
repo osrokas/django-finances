@@ -64,6 +64,8 @@ def index(request):
     total_balance = float(total_incomes) - float(total_spendings) + 34.55 # Amount of the start balance without cash
     total_balance = round(total_balance, 2)
 
+    last_spendings_data = Spending.last_spendings()
+
     # Context for the template
     context = {
         "balance": monthly_balance,
@@ -86,7 +88,7 @@ def index(request):
         "total_spendings": total_spendings,
         "total_incomes": total_incomes,
         "total_balance": total_balance,
-
+        "last_spendings_data": last_spendings_data,
     }
 
     # Render the template

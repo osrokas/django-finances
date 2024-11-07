@@ -26,8 +26,15 @@
         </div>
         <div class="col">
             <div class="row">
-                <p style="margin: 5px; padding-top: 5px; font: 2em tahoma">Totals by categories</p>
-                {% include "charts/bar_category.html" with id="categoryBar" labels=category_labels amounts=category_values title="Spendings" %}
+                <div class="col" style="max-width: 30vh;">
+                    {% include "cards/list_card.html" with title="Last transactions" spedings=last_spendings_data%}
+                </div>
+                <div class="col">
+                    <p style="margin: 5px; padding-top: 5px; font: 2em tahoma">Totals by categories</p>
+                    {% include "charts/bar_category.html" with id="categoryBar" labels=category_labels amounts=category_values title="Spendings" %}
+                </div>
+
+
             </div>
             <div class="row">
                 <p style="margin: 5px; font: 2em tahoma">Totals by month</p>
